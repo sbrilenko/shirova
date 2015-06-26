@@ -1,6 +1,7 @@
 # Shirova project
-*Task:* Create web-site for photographer which will contain portfolio
-*Technologies:* PHP, MySQL, jQuery
+**Task:** Create web-site for photographer which will contain portfolio
+
+**Technologies:** PHP, MySQL, jQuery
 
 ![alt text](https://github.com/sbrilenko/shirova/blob/master/mockup/shirova_glav.png)
 
