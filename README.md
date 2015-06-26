@@ -26,5 +26,7 @@
 ![alt text](https://github.com/sbrilenko/shirova/blob/master/mockup/shirova_portfolio_2011.png)
 
 ![alt text](https://github.com/sbrilenko/shirova/blob/master/mockup/shirova_portfolio_print2011.png)
-shirova_portfolio_printi.png
-shirova_portfolio2.png
+
+![alt text](https://github.com/sbrilenko/shirova/blob/master/mockup/shirova_portfolio_printi.png)
+
+![alt text](https://github.com/sbrilenko/shirova/blob/master/mockup/shirova_portfolio2.png)
