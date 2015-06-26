@@ -1,0 +1,223 @@
+<?php
+  $page -> setTitle('Елена Широва - портфолио');
+
+?>
+
+<div class="shadow"></div>
+		<div class="float_right_arrow">
+	  				<div class="arrows_right">
+	  				</div>
+	  </div>
+	  
+	   <div class="float_left_arrow">
+	   			<div class="arrows_left">
+	  			</div>
+		</div>
+	
+	  
+	  
+		
+<div class="title_0">
+
+		
+		
+				<?php
+				$razdel=$controller-> paramsArray[1]; 
+				$client=$controller-> paramsArray[3]; 
+				$current=$controller-> paramsArray[5];
+				//////////////////////////
+				if($current==date('Y'))
+						{
+
+				$sql_img="SELECT * FROM portfolio WHERE razdel=".$razdel." AND client2=".$client." AND id_portfolio_cat IN ( SELECT id  FROM portfolio_cat WHERE title = ".$current.") ORDER BY create_time DESC";
+				}
+				else {$sql_img="SELECT * FROM portfolio WHERE razdel=".$razdel." AND client2=".$client." AND id_portfolio_cat IN ( SELECT id  FROM portfolio_cat WHERE title = ".$current.") ORDER BY client ASC";}
+				$db->query($sql_img);
+				if($db->getCount()>0)
+				{
+					foreach ($db->getArray() as $value) {
+						   
+						$mass[]=array('id'=>$value['id'],'client' => $value['client'], 'description' => $value['description'], 'photo' => $value['photo']);
+					}
+				}
+
+   $sql="SELECT razdel FROM portfolio WHERE photo=".$mass[0]['id'];
+   $db->query($sql);
+   if($db->getCount()>0)
+   {
+   	   $val=$db->getValue();
+   }
+   $sql="SELECT title,numb FROM portfolio_razdel WHERE numb=".$razdel;
+	$db->query($sql);
+	if($db->getCount()>0)
+	{
+		$array=$db->getArray();
+		
+				switch ($array[0]['numb'])
+				{
+					case '1':
+					//$margin_right='margin-right:67px';
+					$width='160px';
+					break; 
+					case '2':
+					//$margin_right='margin-right:17px';
+					$width='210px';
+					break; 
+					case '3':
+					//$margin_right='margin-right:93px';
+					$width='170px';
+					break; 
+					case '4':
+					//$margin_right='margin-right:91px';
+					$width='170px';
+					break; 
+					case '5':
+					//$margin_right='margin-right:65px';
+					$width='150px';
+					break; 
+					case '6':
+					//$margin_right='margin-right:107px';
+					$width='185px';
+					break; 
+					case '7':
+					//$margin_right='margin-right:51px';
+					$width='130px';
+					break; 
+					case '8':
+					//$margin_right='margin-right:157px';
+					$width='240px';
+					break; 
+				}
+				print '<div class="customer customer_razdel "><a href="/portfolio" class="customer_font">Раздел</a><span class="replace">'.$db->getValue().'</span> ';
+				print '</div>';
+				$sql="SELECT title FROM portfolio_cat WHERE EXISTS ( SELECT id_portfolio_cat  FROM portfolio WHERE portfolio_cat.id = portfolio.id_portfolio_cat AND client2=".$client.' AND razdel='.$razdel.')' ;
+				$db->query($sql);
+				
+				if($db->getCount()>0) {
+				$cant=$db->getCount();
+				$i=0;
+				print "<ul id='menu_cont' class='customer_razdel_year'>";
+				foreach ($db->getArray() as $value) {
+							   	$i++;
+						if($i<$cant) {
+							if($value['title']==$current) {print  '<li class="current"><a href="/portfolio/portfolio/!/'.$razdel.'/!/'.$client.'/!/'.$value['title'].'" title="">'.$value['title'].'</a><span style="margin:0 10px;">|</span></li>';}
+								else {
+									print  '<li><a href="/portfolio/portfolio/!/'.$razdel.'/!/'.$client.'/!/'.$value['title'].'" title="">'.$value['title'].'</a><span style="margin:0 10px;">|</span></li>';}
+						}
+						else 
+							{
+								if($value['title']==$current) {print  '<li class="current"><a href="/portfolio/portfolio/!/'.$razdel.'/!/'.$client.'/!/'.$value['title'].'" title="">'.$value['title'].'</a></li>';}
+								else {
+									print  '<li><a href="/portfolio/portfolio/!/'.$razdel.'/!/'.$client.'/!/'.$value['title'].'" title="">'.$value['title'].'</a></li>';}
+						
+							}
+								
+							
+				}
+				print "</ul>";	
+				}
+	print '<div class="customer"><a href="/portfolio/razdel/!/'.$val.'" class="customer_font">Заказчик</a><span class="replace">'.$mass[0]['client'].'</span></div>';
+	
+	}
+				
+				
+	
+	
+	print '<div class="text_port">'.$mass[0]['description'].' </div>';	
+	/////////////////////////
+				
+						
+				print '
+				<div class="preloader"></div>
+							<div id="main_portfolio">
+								
+  	 							<div class="picture_hight_width"></div></div></div>';
+			?>
+		
+	<script type="text/javascript"> 
+  $(document).ready(function() {
+  	 
+  	var obj = <?php echo json_encode($mass);?> 
+  	var total=obj.length;
+  	var current=0;
+  	 var img= new Image();
+  	  $('.picture_hight_width').css('background','url("img/portfolio/'+obj[current]['photo']+'")');
+  	 
+  	 if(total==1)
+  	 {
+  	 	$('.float_right_arrow').hide();
+  	 }
+  	 else
+  	 {
+  	 	img.src= 'img/portfolio/'+obj[current+1]['photo'];
+  	 }
+     
+     
+      
+       $(document).bind('keyup',function(e){
+					switch (e.keyCode){
+						case 39: 
+							 if ($(':animated').length) { return false;}	
+  	  						else $('.float_right_arrow').trigger('click')	
+						break;
+						case 37:
+							 if ($(':animated').length) { return false;}	
+  	  						else $('.float_left_arrow').trigger('click')	
+						 break;						
+					}
+				});
+      
+  	 $('.float_right_arrow,.float_left_arrow').live('click touchend',function() {
+  	  if ($(':animated').length) { return false;}	
+  	  else {
+  	if($(this).attr('class')==="float_right_arrow")
+  			{ 
+  				   if(current<total-1) {
+  				   if(current==total-2) { $('.float_right_arrow').hide();}
+  				      
+  				    $('.preloader').show();
+  				   	$('.picture_hight_width').animate({marginLeft:'930px'}, 500, function() {
+  				   	$('.picture_hight_width').css('margin-left','-930px');
+					$('.picture_hight_width').animate({marginLeft:'20px'},500);
+					$('.float_left_arrow').show();
+					$('.picture_hight_width').css('background','url("'+img.src+'")');
+					$('.preloader').hide();
+  					current=current+1;
+  					if(current<total-1) {
+  					img.src='img/portfolio/'+obj[current+1]['photo'];}
+  					else {img.src='img/portfolio/'+obj[current]['photo'];}
+  		            //$('.picture_hight_width img').attr('src',cur.src);
+  		            //$('span.replace').replaceWith('<span class="replace">'+obj[current]['client']+'</span>');
+  		            $('div.text_port').replaceWith('<div class="text_port">'+obj[current]['description']+'</div>');
+					});
+
+  		           }
+  			}
+  	if($(this).attr('class')==="float_left_arrow") 
+  			{ 
+  				
+  				
+  				 if(current>=1) {
+  				 	if(current==1) { $('.float_left_arrow').hide();}
+  					$('.preloader').show();
+  				 	$('.picture_hight_width').animate({marginLeft:'-930px'},500 , function() {
+  				 	$('.picture_hight_width').css('margin-left','930px');
+					$('.picture_hight_width').animate({marginLeft:'20px'},500);
+  				 	$('.float_right_arrow').show();
+  					current=current-1;
+  					$('.picture_hight_width').css('background','url("img/portfolio/'+obj[current]['photo']+'")');
+  					$('.preloader').hide();
+  					img.src='img/portfolio/'+obj[current+1]['photo'];
+  		            // $('span.replace').replaceWith('<span class="replace">'+obj[current]['client']+'</span>');
+  		              $('div.text_port').replaceWith('<div class="text_port">'+obj[current]['description']+'</div>');
+  		           });
+  		           }
+  			}
+  		}
+        	});
+  	
+  });
+
+</script>
+					
+	

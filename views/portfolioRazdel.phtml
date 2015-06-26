@@ -1,0 +1,204 @@
+<?php
+  $page -> setTitle('Елена Широва - портфолио');
+
+?>
+
+<div class="shadow"></div>
+		<div class="float_right_arrow">
+	  				<div class="arrows_right">
+	  				</div>
+	  </div>
+	  
+	   <div class="float_left_arrow">
+	   			<div class="arrows_left">
+	  			</div>
+		</div>
+	
+	  
+	  
+		
+<div class="title_0">
+				<?php 
+				$current=$controller-> paramsArray[1];
+
+		switch ($current)
+		{
+			case '1':
+				$razdel='Компании';
+				$url_razdel=1;
+			break;
+			case '2':
+				$razdel='Ювелирные компании';
+				$url_razdel=2;
+			break;
+			case '3':
+				$razdel='Салоны, бутики';
+				$url_razdel=3;
+			break;
+			case '4':
+				$razdel='Дизайн-студии';
+				$url_razdel=4;
+			break;
+			case '5':
+				$razdel='Календари';
+				$url_razdel=5;
+			break;
+			case '6':
+				$razdel='Фирменный стиль';
+				$url_razdel=6;
+			break;
+			case '7':
+				$razdel='Интерьер';
+				$url_razdel=7;
+			break;
+			case '8':
+				$razdel='Предметы и аксессуары';
+				$url_razdel=8;
+			break;
+		} 			
+	print '<div class="customer customer_razdel"><a href="/portfolio" class="customer_font">Раздел</a><span class="replace">'.$razdel.'</span> </div>';				
+				print '<div class="clear"></div>
+				<div class="preloader"></div>
+							<div id="main_portfolio">';
+	    $content='';
+		$k=1;
+  	 	$sql="SELECT DISTINCT * FROM portfolio WHERE razdel=".$current.' GROUP by client2 Order by create_time DESC'; 
+				$db->query($sql);
+				if($db->getCount()>0)
+				{
+				
+					print '<div class="picture_hight_width margin_55_35_0_35">
+  	 							<ul class="portfolio_main_ul" id="portfolio_main">';
+					
+					foreach ($db->getArray() as $index=>$value) {
+								 
+						$sql="SELECT * FROM partner_logo WHERE id=".$value['client2']." ORDER BY weight ASC";
+						$db->query($sql);
+						if($db->getCount()>0)
+						{
+							$ar_m=$db->getArray();
+								$sql_l="SELECT title FROM portfolio_cat WHERE EXISTS ( SELECT id_portfolio_cat  FROM portfolio WHERE portfolio_cat.id = portfolio.id_portfolio_cat AND client2=".$value['client2'].' AND razdel='.$url_razdel.') ORDER BY title DESC' ;
+								$db->query($sql_l);
+								
+								if($index-(8*$k)>0)
+								{
+									$mass[]=array('id'=>$content,'index'=>$index,'percent'=>$index-(8*$k));
+									$content='';
+									$k=$k+1;
+								}
+								$content.='<li data-id="'.$url_razdel.'/!/'.$value['client2'].'/!/'.$db->getValue().'" class="portfolio_razdel_li"><div class="pict" style="background:transparent url(\'../img/partner_logo/'.$ar_m[0]['photo'].'\') no-repeat;"></div><div class="pict_razdel padding_top_10">'.$ar_m[0]['name'].'</div></li>';	
+								
+
+						}
+											          
+					}
+				if(!empty($content))
+								{
+									  $mass[]=array('id'=>$content,'index'=>$index,'percent'=>$index-(8*$k));
+								}
+						     
+									
+				  	 		    print '</ul></div>';		
+					}
+							
+															
+  	 print '</div></div>';
+			?>
+		
+	<script type="text/javascript"> 
+$(document).ready(function() {
+  	 
+  $('#portfolio_main li').live('click touchend',function() {
+			if($(this).attr('data-id')!='none')
+			{
+				var isMSIE = /*@cc_on!@*/false;
+			   if( isMSIE ) window.location.href('/portfolio/portfolio/!/'+$(this).attr('data-id') );
+
+ 				else window.location.href = '/portfolio/portfolio/!/'+$(this).attr('data-id');
+				//location.href='/portfolio/portfolio/!/'+$(this).attr('data-id');
+			} 
+			
+		})
+  	 
+  	var obj = <?php echo json_encode($mass);?> 
+  	var total=obj.length;
+  	var current=0;
+  	 var img= new Image();
+  	 var content='';
+  	 if(obj.length>1)
+  	 {
+  	 	 
+  	 }
+  	 else
+  	 {
+  	 	$('.float_right_arrow').hide();
+  	 	
+  	 }
+
+  	 $('#portfolio_main').replaceWith('<ul class="portfolio_main_ul" id="portfolio_main">'+obj[current]['id']+'</ul>');
+  	 // $('.picture_hight_width').css('background','url("img/partner_logo/'+obj[current]['photo']+'") no-repeat');
+
+       $(document).bind('keyup',function(e){
+					switch (e.keyCode){
+						case 39: 
+							 if ($(':animated').length) { return false;}	
+  	  						else $('.float_right_arrow').trigger('click')	
+						break;
+						case 37:
+							 if ($(':animated').length) { return false;}	
+  	  						else $('.float_left_arrow').trigger('click')
+						 break;						
+					}
+				});
+      
+  	 $('.float_right_arrow,.float_left_arrow').live('click touchend',function() {
+  	  if ($(':animated').length) { return false;}	
+  	  else {
+  	if($(this).attr('class')==="float_right_arrow")
+  			{ 
+                   
+                   
+  				   if(current<total-1) {
+  				   if(current==total-2) { $('.float_right_arrow').hide();}
+  				      
+  				    $('.preloader').show();
+  				   	$('.picture_hight_width').animate({marginLeft:'930px'}, 500, function() {
+  				   	$('.picture_hight_width').css('margin-left','-930px');
+					$('.picture_hight_width').animate({marginLeft:'35px'},500);
+					$('.float_left_arrow').show();
+					$('#portfolio_main').replaceWith('<ul class="portfolio_main_ul" id="portfolio_main">'+obj[current+1]['id']+'</ul>');
+					$('.preloader').hide();
+  					current=current+1;
+  				
+  		            //$('.picture_hight_width img').attr('src',cur.src);
+  		           
+					});
+
+  		           }
+  			}
+  			else
+  	if($(this).attr('class')==="float_left_arrow") 
+  			{ 
+  				
+  				
+  				 if(current>=1) {
+  				 	if(current==1) { $('.float_left_arrow').hide();}
+  					$('.preloader').show();
+  				 	$('.picture_hight_width').animate({marginLeft:'-930px'},500 , function() {
+  				 	$('.picture_hight_width').css('margin-left','930px');
+					$('.picture_hight_width').animate({marginLeft:'35px'},500);
+  				 	$('.float_right_arrow').show();
+  					current=current-1;
+  					$('#portfolio_main').replaceWith('<ul class="portfolio_main_ul" id="portfolio_main">'+obj[current]['id']+'</ul>');
+  					$('.preloader').hide();
+  		           });
+  		           }
+  			}
+  		}
+        	});
+  	
+  });
+
+</script>
+					
+	

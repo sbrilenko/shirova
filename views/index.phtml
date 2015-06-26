@@ -1,0 +1,27 @@
+<?php
+    $page -> setTitle("Елена Широва - Главная");
+	$page -> hideFooter() -> hideHeader();
+	$page -> addScript('js/jquery-1.6.1.min.js');
+	$db->query("SELECT DISTINCT photo FROM home");	
+      $title=$db->getValue();
+?>	
+
+
+<div class="shadow">
+
+</div>
+
+	
+	  
+		
+<div class="title_0">
+					
+	 			<div class="picture_hight_width_main"></div>
+ </div>
+ 
+</div>
+
+<script> 
+var obj = <?php echo json_encode($title);?> 
+$('.picture_hight_width_main').css('background','url("img/home/'+obj+'")');
+</script> 

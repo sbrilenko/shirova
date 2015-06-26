@@ -1,0 +1,302 @@
+HTML {
+    height:100%;
+}
+
+BODY {
+    font-family:Verdana, Geneva, sans-serif;
+    font-size:12px;
+    background-color:#EEEEFF;
+    height:100%;
+    margin:0;
+    padding:0;
+}
+
+/* -------- Global -------- */
+A {
+    text-decoration:none;
+    color:#97978D;
+}
+
+A:hover {
+    color:#000;
+}
+
+A.tut {
+    color:#000;
+}
+
+P.error 
+{
+    color: #CC0000;
+}
+SPAN.color
+{
+    color: #CC0000;
+}
+
+SELECT 
+{
+    margin-top:5px;
+}
+
+/* -------- TABLE.main -------- */
+TABLE.main
+{
+    border-color: #A0A0A0;
+    border-width: 0 1px 0 1px;
+    border-style: solid;	
+    width: 1000px;
+    margin: 0 auto;
+    background-color: #fff;
+}
+
+TABLE.main TD.head, TABLE.main TD.foot
+{
+    background-color:#EEE;
+    text-align:center;
+    height:18px;
+}
+
+TABLE.main TD.head
+{
+    border-bottom: 1px solid #A0A0A0;
+}
+
+TABLE.main TD.foot
+{
+    border-top: 1px solid #A0A0A0;
+}
+
+TABLE.main TD.center
+{
+    height: 99%;
+}
+
+/* -------- loginFields -------- */
+DIV#loginFields
+{
+    width: 250px;
+    text-align: right;
+}
+
+DIV#loginFields P
+{
+    margin: 0 0 3px 0;
+}
+
+DIV#loginFields INPUT[type="text"], DIV#loginFields INPUT[type="password"]
+{
+    width: 150px;
+}
+
+DIV#loginFields INPUT[type="submit"]
+{
+    width: 50px;
+}
+
+/* -------- helpIn -------- */
+DIV#helpIn
+{
+    margin: 3px 0 0 0;
+    width: 500px;
+    text-align: center;
+    font-size:10px;
+    font-style: italic;
+}
+
+/* -------- content -------- */
+TD#content
+{
+    text-align: center;
+    vertical-align: top;
+}
+
+DIV#action
+{
+    padding: 10px 0 10px 0;
+}
+
+DIV#actionContent
+{
+ 
+}
+
+DIV#actionContent LEGEND
+{
+    margin:0 auto;
+}
+
+
+DIV.pictureItem 
+{
+    width: 160px;
+    height: 135px;
+    border: 1px solid #A0A0A0;
+    text-align: center;
+    vertical-align: top;
+    display: inline-block;
+    margin: 5px;
+}
+
+DIV.pictureItem TD
+{
+    vertical-align: top;
+}
+
+DIV#edit 
+{
+    width: 70%;
+    margin: 0 auto;
+}
+
+DIV#edit TABLE
+{
+    width: 100%;
+}
+
+DIV#edit TD.left
+{
+    width: 150px;
+    text-align: right;
+    vertical-align: top;
+}
+
+DIV#edit TD.right
+{
+    text-align: left;
+}
+
+DIV#edit TD 
+{
+    padding: 3px;
+}
+
+DIV#edit TD.in_table_img
+{
+    width: 135px;
+    height: 135px;
+    vertical-align: top;
+}
+
+DIV#edit TD.in_table_drop
+{
+    width: 20px;
+    vertical-align: top;
+}
+
+DIV#edit INPUT[type="submit"]
+{
+    padding: 2px 3px 2px 3px;
+}
+
+DIV#edit INPUT[type='text'].date 
+{
+    width:70px;
+}
+
+DIV#edit INPUT[type='text'].datetime 
+{
+    width:130px;
+}
+
+DIV#edit INPUT[type='text'] 
+{
+    width:100%;
+}
+
+
+DIV#edit SELECT 
+{
+    margin-top: 0;
+}
+
+DIV.bigItem 
+{
+    width: 80%;
+    border: 1px solid #A0A0A0;
+    vertical-align: top;
+    margin: 0 auto;;
+    margin-bottom: 10px;
+}
+
+DIV.bigItem TD.titles 
+{
+    vertical-align:top;
+    text-align:left;
+    width:135px;
+}
+
+DIV.bigItem TD.text 
+{
+    vertical-align:top;
+    text-align:left;
+}
+
+DIV.bigItem TD.text IMG
+{
+    margin: 0 5px 5px 0;
+}
+
+DIV.bigItem TD.buttons 
+{
+    vertical-align:top;
+    text-align:left;
+    width:20px;
+    padding: 3px;
+}
+
+TABLE.editor 
+{
+    width: 100%;
+}
+
+TABLE.editor DIV.help 
+{
+    border:1px dotted #000;
+    padding:2px;	
+    background-color:#F5F5F5;
+    font-size:10px;
+    width: 99%;
+}
+
+TABLE.editor DIV.help P 
+{
+    margin:0;
+    padding:2px;
+}
+
+TABLE.editor TEXTAREA 
+{
+    width:100%;
+    height:250px;
+}
+
+TABLE.editor TD.right 
+{
+    width: 40px;
+    text-align: center;
+    vertical-align: top;
+}
+
+TABLE.editor DIV.button {
+    border: 1px solid #888;
+    background-color:#EFEFEF;
+    width: 35px;
+    text-align:center;
+    cursor:pointer;
+    margin-bottom:5px;
+}
+DIV.help 
+{
+    text-align: right;
+    font-size: 9px;
+    font-style: italic;
+    color: #97978D;
+}
+
+TABLE#pictures P 
+{
+    margin:0;
+    padding: 0;
+    font-weight: bold;
+}

@@ -1,0 +1,238 @@
+<?php
+	$page -> setTitle("Елена Широва - новости");
+	
+	
+	if ($controller -> hasParam('id')){
+		$id = $controller -> getParam('id');
+		} else {
+			    $sql='SELECT id FROM news ORDER BY date_create LIMIT 1';
+				$db->query($sql);
+				if($db->getCount()>0)
+				{
+					$id=$db->getValue();
+				}
+				else
+				{
+					$id=0;
+				}
+		}
+		
+		print '<div class="shadow"></div><div class="float_right_arrow">
+	  				<div class="arrows_right">
+	  				</div>
+	  </div>
+	  
+	   <div class="float_left_arrow">
+	   			<div class="arrows_left">
+	  			</div>
+		</div>';
+		print "<div class='title_0'>
+		<div style='position:absolute;margin-left:812px;margin-top:65px;'><a href='/news' class='customer_font'>Вернуться&nbsp;назад</a></div>
+		<div class='count_page'></div>		
+			
+							<div class='preloader'></div>
+							<div id='main_portfolio'>					
+  	 							<div class='picture_hight_width' style='margin-left: 35px; '>";  
+  	 		
+			$sql='SELECT * FROM news ORDER BY date_create DESC';
+			$db->query($sql);
+			if($db->getCount()>0)
+			{
+				$arr=$db->getArray();
+				foreach($arr as $index=>$val)
+				{
+					unset($m);
+					$sql_get_gal='SELECT * FROM news_galery WHERE id_news='.$val['id'].' LIMIT 5';
+					$db->query($sql_get_gal);
+					if($db->getCount()>0)
+					{
+						$arr_gal=$db->getArray();
+						foreach($arr_gal as $index_gal=>$val_gal)
+						{
+							$m[]=array('id'=>$val_gal['id'],'photo'=>$val_gal['photo']);
+						}
+					}
+					else
+					{
+						$m=array();
+					}
+					$val['date_create']=explode('-',$val['date_create']);
+					$val['date_create']=$val['date_create'][2].'.'.$val['date_create'][1].'.'.$val['date_create'][0];
+					$mass[]=array('date_create' => $val['date_create'], 'photo' => $val['photo'], 'text_rus' => $val['text_rus'],'id' => $val['id'],'gal'=>$m);
+				}
+			}
+			if($id!=0)
+			{
+				$sql='SELECT * FROM news WHERE id='.$id;
+				$db->query($sql);
+				if($db->getCount()>0)
+				{
+					$arr=$db->getArray();
+					$arr[0]['date_create']=explode('-',$arr[0]['date_create']);
+					$arr[0]['date_create']=$arr[0]['date_create'][2].'.'.$arr[0]['date_create'][1].'.'.$arr[0]['date_create'][0];
+					print '<div class="news-wrapper"><div class="date">'.$arr[0]['date_create'].'г</div><div class="news-limiter"><p>'.$arr[0]['text_rus'].'</p></div>
+						   <div id="navigation">';
+						   //get_photos
+						   $sql_getphotos='SELECT * FROM news_galery WHERE id_news='.$id.' LIMIT 5';
+						   $db->query($sql_getphotos);
+						   if($db->getCount()>0)
+						   {
+						   	    print ' <ul class="thumbinails">';
+						   		$arr_photos=$db->getArray();
+								foreach($arr_photos as $index=>$val)
+								{
+									if($index+1==count($arr_photos))
+									{
+										print '<li class="margin_right_0"><a href="/news/photo/id/'.$val['id'].'" title=""><img src="img/news_gallery/thumb_'.$val['photo'].'" data-id="'.$val['id'].'" alt="Елена Широва - новости"></a></li>';
+									}
+									else
+									print '<li><a href="/news/photo/id/'.$val['id'].'" title=""><img src="img/news_gallery/thumb_'.$val['photo'].'" data-id="'.$val['id'].'" alt="Елена Широва - новости"></a></li>';
+								}
+								print ' </ul>';
+						   }
+						   		
+						  print '</div></div>';
+				}
+			}
+			
+			
+print '</div></div></div>';
+?>
+<script type='text/javascript'>
+          var  obj=<?php echo json_encode($mass);?>;
+           var page=<?php echo $id;?>;
+           if(page!=0)
+           {
+           		//какая по счету новость
+           		for(i=0;i<obj.length;i++)
+           		{
+           			if(obj[i]['id']==page)
+           			{
+           				page=i+1;
+           			}
+           		}
+           }
+          $('.count_page').replaceWith('<div class="count_page">Новость '+ page+' / '+obj.length+'</div>');
+          if(obj.length==1)
+          {
+          	$('.float_left_arrow, .float_right_arrow').hide();
+          }
+          
+          if(page>1) {$('.float_left_arrow').show();}
+          if(page==obj.length) {$('.float_right_arrow').hide();}
+           $(document).bind('keyup',function(e){
+           	 if ($(':animated').length) { return false;}	
+           	 else
+           	 {
+           	 		switch (e.keyCode){
+						case 37:
+						$('.float_left_arrow').trigger('click');
+						break;
+						case 39: 
+						$('.float_right_arrow').trigger('click');
+						break;
+					}
+           	 }
+			})
+          $('.float_right_arrow').live('click touchend',function()
+          {
+          	 if ($(':animated').length) { return false;}	
+          	 else
+          	 {
+          	 	var next='';
+          					if(page!=obj.length)
+          					{
+          						 next='<div class="news-wrapper"><div class="date">'+obj[page]['date_create']+'г</div><div class="news-limiter"><p>'+obj[page]['text_rus']+'</p></div><div id="navigation">';
+						   				if(obj[page]['gal'].length>0)
+						   				{
+						   					next+='<ul class="thumbinails">';
+						   					 for(j=0;j<obj[page]['gal'].length;j++)
+									   		 {
+									   		 	if(j==5) break;
+									   		 	if(j==4)
+									   		 	{
+									   		 		next+='<li class="margin_right_0"><a href="news/photo/id/'+obj[page]['gal'][j]['id']+'" title=""><img src="img/news_gallery/thumb_'+obj[page]['gal'][j]['photo']+'" data-id="'+obj[page]['gal'][j]['id']+'" alt="Елена Широва - новости"></a></li>'
+									   		 	}
+									   		 	else
+									   		 	{
+									   		 		next+='<li><a href="news/photo/id/'+obj[page]['gal'][j]['id']+'" title=""><img src="img/news_gallery/thumb_'+obj[page]['gal'][j]['photo']+'" data-id="'+obj[page]['gal'][j]['id']+'" alt="Елена Широва - новости"></a></li>';
+									   		 	}
+									   		 	
+									   		 }
+									   		next+='</ul>';
+						   				}
+							    next+='</div></div>';
+							     page++;
+          					}
+          					else
+          					{
+          						return false;
+          					}
+          	        
+          			if(page==obj.length) { $(this).hide();}
+          			if(page>1)
+          			{
+          				$('.float_left_arrow').show();
+          			}
+      				
+					$('.count_page').replaceWith('<div class="count_page">Новость '+page+' / '+obj.length+'</div>');
+					$('.preloader').show();
+  				   	$('.picture_hight_width').animate({marginLeft:'930px'}, 500, function() {
+  				   	$('.picture_hight_width').css('margin-left','-930px');
+					$('.picture_hight_width').animate({marginLeft:'20px'},500);
+					$('.preloader').hide();
+					$('.news-wrapper').replaceWith(next);   
+					}) 
+          	 }
+          					     		
+          });
+          $('.float_left_arrow').live('click touchend',function()
+          {
+          	if ($(':animated').length) { return false;}	
+          	 else
+          	 {
+          	 	 if(page==1) return false;
+          			var next='';
+          			if(page!=1)
+      					{
+      						 page--;
+      						 next='<div class="news-wrapper"><div class="date">'+obj[page-1]['date_create']+'г</div><div class="news-limiter"><p>'+obj[page-1]['text_rus']+'</p></div><div id="navigation">';
+					   				if(obj[page-1]['gal'].length>0)
+					   				{
+					   					next+='<ul class="thumbinails">';
+					   					 for(j=0;j<obj[page-1]['gal'].length;j++)
+								   		 {
+								   		 	if(j==5) break;
+								   		 	if(j==4)
+								   		 	{
+								   		 		next+='<li class="margin_right_0"><a href="news/photo/id/'+obj[page-1]['gal'][j]['id']+'" title=""><img src="img/news_gallery/thumb_'+obj[page-1]['gal'][j]['photo']+'" data-id="'+obj[page-1]['gal'][j]['id']+'" alt="Елена Широва - новости"></a></li>'
+								   		 	}
+								   		 	else
+								   		 	{
+								   		 		next+='<li><a href="news/photo/id/'+obj[page-1]['gal'][j]['id']+'" title=""><img src="img/news_gallery/thumb_'+obj[page-1]['gal'][j]['photo']+'" alt="Елена Широва - новости"></a></li>';
+								   		 	}
+								   		 	
+								   		 }
+								   		next+='</ul>';
+					   				}
+						    next+='</div></div>';
+						     	
+          			if(page==1) { $(this).hide();}
+          			if(page<obj.length)
+          			{
+          				$('.float_right_arrow').show();
+          			}
+					$('.count_page').replaceWith('<div class="count_page">Новость '+page+' / '+obj.length+'</div>');
+					$('.preloader').show();
+  				   	$('.picture_hight_width').animate({marginLeft:'-930px'}, 500, function() {
+  				   	$('.picture_hight_width').css('margin-left','930px');
+					$('.picture_hight_width').animate({marginLeft:'20px'},500);
+					$('.preloader').hide();
+					$('.news-wrapper').replaceWith(next);    
+					})   
+					} 
+          	 }
+          	         		
+          });
+          
+   </script>		

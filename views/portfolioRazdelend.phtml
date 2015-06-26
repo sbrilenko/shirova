@@ -1,0 +1,144 @@
+<?php
+  $page -> setTitle('Елена Широва - портфолио');
+    $page -> addScript('js/jquery-1.6.1.min.js','js/arrow.js');
+
+?>
+
+<div class="shadow"></div>
+		  	  <div class="float_right_arrow">
+	  				<div class="arrows_right">
+	  				</div>
+	  </div>
+	  
+	   <div class="float_left_arrow">
+	   			<div class="arrows_left">
+	  			</div>
+		</div>
+<div class="title_0">
+		<ul id='menu_cont'>
+				<?php 
+				$current=$controller-> paramsArray[1];
+				print_r($controller);
+				$sql="SELECT title FROM portfolio_cat WHERE EXISTS ( SELECT id_portfolio_cat  FROM portfolio WHERE portfolio_cat.id = portfolio.id_portfolio_cat ) ";
+				$db->query($sql);
+				
+				if($db->getCount()==0) {}
+				else {
+				$cant=$db->getCount();
+				$i=0;
+				foreach ($db->getArray() as $value) {
+							   	$i++;
+						if($i<$cant) {
+							if($value['title']==$current) {print  '<li class="current"><a href="/portfolio/!/'.$value['title'].'" title="">'.$value['title'].'</a><span style="margin:0 10px;">|</span></li>';}
+								else {
+									print  '<li><a href="/portfolio/!/'.$value['title'].'" title="">'.$value['title'].'</a><span style="margin:0 10px;">|</span></li>';}
+						}
+						else 
+							{
+								if($value['title']==$current) {print  '<li class="current"><a href="/portfolio/!/'.$value['title'].'" title="">'.$value['title'].'</a></li>';}
+								else {
+									print  '<li><a href="/portfolio/!/'.$value['title'].'" title="">'.$value['title'].'</a></li>';}
+						
+							}
+								
+							
+				}
+				print "</ul>";
+				}
+				if($current==date('Y'))
+						{
+
+				$sql_img="SELECT * FROM portfolio WHERE id_portfolio_cat IN ( SELECT id  FROM portfolio_cat WHERE title = ".$current.") ORDER BY create_time DESC";
+				}
+				else {$sql_img="SELECT * FROM portfolio WHERE id_portfolio_cat IN ( SELECT id  FROM portfolio_cat WHERE title = ".$current.") ORDER BY client ASC";}
+				$db->query($sql_img);
+					foreach ($db->getArray() as $value) {
+						   
+						$mass[]=array('client' => $value['client'], 'description' => $value['description'], 'photo' => $value['photo']);
+					}
+					
+	print '<div class="customer"><span class="customer_font">Заказчик</span><span class="replace">'.$mass[0]['client'].'</span> </div>
+	<div class="text_port">'.$mass[0]['description'].' </div>';				
+				print '<div class="clear"></div>
+				<div class="preloader"></div>
+							<div id="main_portfolio">
+								
+  	 							<div class="picture_hight_width"></div></div></div>';
+			?>
+		
+	<script type="text/javascript"> 
+  $(document).ready(function() {
+  	 
+  	var obj = <?php echo json_encode($mass);?> 
+ 
+  	var total=obj.length;
+  	var current=0;
+  	 var img= new Image();
+  	 
+  	 img.src= 'img/portfolio/'+obj[current+1]['photo'];
+  	 
+      $('.picture_hight_width').css('background','url("img/portfolio/'+obj[current]['photo']+'")');
+     
+      
+       $(document).bind('keyup',function(e){
+					switch (e.keyCode){
+						case 39: 
+							 if ($(':animated').length) { return false;}	
+  	  						else $('.float_right_arrow').trigger('click');	
+						break;
+						case 37:
+							 if ($(':animated').length) { return false;}	
+  	  						else $('.float_left_arrow').trigger('click');	
+						 break;						
+					}
+				});
+      
+  	 $('.float_right_arrow,.float_left_arrow').live('click touchend',function() {
+  	  if ($(':animated').length) { return false;}	
+  	  else {
+  	if($(this).attr('class')=="float_right_arrow")
+  			{   if(current<total-1) {
+  				   if(current==total-2) { $('.float_right_arrow').hide();}
+  				      
+  				    $('.preloader').show();
+  				   	$('.picture_hight_width').animate({marginLeft:'930px'}, 500, function() {
+  				   	$('.picture_hight_width').css('margin-left','-930px');
+					$('.picture_hight_width').animate({marginLeft:'20px'},500);
+					$('.float_left_arrow').show();
+					$('.picture_hight_width').css('background','url("'+img.src+'")');
+					$('.preloader').hide();
+  					current=current+1;
+  					if(current<total-1) {
+  					img.src='img/portfolio/'+obj[current+1]['photo'];}
+  		            //$('.picture_hight_width img').attr('src',cur.src);
+  		            $('span.replace').replaceWith('<span class="replace">'+obj[current]['client']+'</span>');
+  		            $('div.text_port').replaceWith('<div class="text_port">'+obj[current]['description']+'</div>');
+					});
+
+  		           }
+  			}
+  	if($(this).attr('class')=="float_left_arrow") 
+  			{ if(current>=1) {
+  				 	if(current==1) { $('.float_left_arrow').hide();}
+  					$('.preloader').show();
+  				 	$('.picture_hight_width').animate({marginLeft:'-930px'},500 , function() {
+  				 	$('.picture_hight_width').css('margin-left','930px');
+					$('.picture_hight_width').animate({marginLeft:'20px'},500);
+  				 	$('.float_right_arrow').show();
+  					current=current-1;
+  					$('.picture_hight_width').css('background','url("img/portfolio/'+obj[current]['photo']+'")');
+  					$('.preloader').hide();
+  					img.src='img/portfolio/'+obj[current+1]['photo'];
+  		             $('span.replace').replaceWith('<span class="replace">'+obj[current]['client']+'</span>');
+  		              $('div.text_port').replaceWith('<div class="text_port">'+obj[current]['description']+'</div>');
+  		           });
+  		           }
+  			}
+  		}
+        	});
+  	
+  });
+
+</script>
+					
+	

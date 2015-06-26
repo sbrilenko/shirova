@@ -1,0 +1,173 @@
+<?php
+  $page -> setTitle('Елена Широва - портфолио');
+
+?>
+
+<div class="shadow"></div>
+				
+<div class="title_0">
+
+				<?php 
+
+				
+				print '<div class="preloader"></div>
+							<div id="main_portfolio" >
+  	 							<div class="picture_hight_width margin_55_35_0_35">
+  	 							<ul class="portfolio_main_ul" id="portfolio_main">';
+  	 							    $sql='SELECT * FROM portfolio WHERE razdel=1';
+									$db->query($sql);
+									if($db->getCount()>0) 
+									{
+										$data_id=1;
+										$pict_razdel='class="pict_razdel padding_top_10"';
+										$change_back_img='class="pict background_main_portfolio_company"';
+									}
+									else
+										{
+											$data_id='none';
+											$pict_razdel='class="padding_top_10"';
+											$change_back_img='class="pict background_main_portfolio_company_none"';
+										}
+  	 								print '<li data-id="'.$data_id.'" class="portfolio_main_ul_li">
+  	 								<div  '.$change_back_img.'></div>
+  	 								<div '.$pict_razdel.' >Компании</div>
+  	 								</li>';
+									 $sql='SELECT * FROM portfolio WHERE razdel=2';
+									$db->query($sql);
+									if($db->getCount()>0) 
+									{
+										$data_id=2;
+										$pict_razdel='class="pict_razdel padding_top_10"';
+										$change_back_img='class="pict background_main_portfolio_ju_company"';
+									}
+									else
+										{
+											$data_id='none';
+											$pict_razdel='class="padding_top_10"';
+											$change_back_img='class="pict background_main_portfolio_ju_company_none"';
+										}
+  	 								print '<li data-id="'.$data_id.'" class="portfolio_main_ul_li"><div '.$change_back_img.'></div>
+  	 								<div '.$pict_razdel.' >Ювелирные компании</div>
+  	 								</li>';
+  	 								 $sql='SELECT * FROM portfolio WHERE razdel=3';
+									$db->query($sql);
+									if($db->getCount()>0) 
+									{
+										$data_id=3;
+										$pict_razdel='class="pict_razdel padding_top_10"';
+										$change_back_img='class="pict background_main_portfolio_salons"';
+									}
+									else
+										{
+											$data_id='none';
+											$pict_razdel='class="padding_top_10"';
+											$change_back_img='class="pict background_main_portfolio_salons_none"';
+										}
+  	 								print '<li data-id="'.$data_id.'" class="portfolio_main_ul_li"><div '.$change_back_img.'></div>
+  	 								<div '.$pict_razdel.'>Салоны, бутики</div>
+  	 								</li>';
+									$sql='SELECT * FROM portfolio WHERE razdel=4';
+									$db->query($sql);
+									if($db->getCount()>0) 
+									{
+										$data_id=4;
+										$pict_razdel='class="pict_razdel padding_top_10"';
+										$change_back_img='class="pict background_main_portfolio_design" ';
+									}
+									else
+										{
+											$data_id='none';
+											$pict_razdel='class="padding_top_10"';
+											$change_back_img='class="pict background_main_portfolio_design_none" ';
+										} 
+  	 								print '<li data-id="'.$data_id.'" class="portfolio_main_ul_li_last_in_line"><div '.$change_back_img.'></div>
+  	 								<div '.$pict_razdel.'>Дизайн-студии</div>
+  	 								</li>';
+  	 								$sql='SELECT * FROM portfolio WHERE razdel=5';
+									$db->query($sql);
+									if($db->getCount()>0) 
+									{
+										$data_id=5;
+										$pict_razdel='class="pict_razdel padding_top_10"';
+										$change_back_img='class="pict background_main_portfolio_calendars"';
+									}
+									else
+										{
+											$data_id='none';
+											$pict_razdel='class="padding_top_10"';
+											$change_back_img='class="pict background_main_portfolio_calendars_none"';
+										} 
+									print '<li data-id="'.$data_id.'" class="portfolio_main_ul_li"><div '.$change_back_img.' ></div>
+									<div '.$pict_razdel.'>Календари</div>
+  	 								</li>';
+  	 								$sql='SELECT * FROM portfolio WHERE razdel=6';
+									$db->query($sql);
+									if($db->getCount()>0) 
+									{
+										$data_id=6;
+										$pict_razdel='class="pict_razdel padding_top_10"';
+										$change_back_img='class="pict background_main_portfolio_corporate"';
+									}
+									else
+										{
+											$data_id='none';
+											$pict_razdel='class="padding_top_10"';
+											$change_back_img='class="pict background_main_portfolio_corporate_none"';
+										} 
+  	 								print '<li data-id="'.$data_id.'" class="portfolio_main_ul_li"><div '.$change_back_img.' ></div>
+  	 								<div '.$pict_razdel.'>Фирменный стиль</div>
+  	 								</li>';
+									$sql='SELECT * FROM portfolio WHERE razdel=7';
+									$db->query($sql);
+									
+									if($db->getCount()>0) 
+									{
+										$data_id=7;
+										$pict_razdel='class="pict_razdel padding_top_10"';
+										$change_back_img='class="pict background_main_portfolio_interior"';
+									}
+									else
+										{
+											$data_id='none';
+											$pict_razdel='class="padding_top_10"';
+											$change_back_img='class="pict background_main_portfolio_interior_none"';
+										} 
+  	 								print '<li data-id="'.$data_id.'" class="portfolio_main_ul_li"><div '.$change_back_img.'></div>
+  	 								<div '.$pict_razdel.'>Интерьер</div>
+  	 								</li>';
+  	 								$sql='SELECT * FROM portfolio WHERE razdel=8';
+									$db->query($sql);
+									if($db->getCount()>0) 
+									{
+										$data_id=8;
+										$pict_razdel='class="pict_razdel padding_top_10"';
+										$change_back_img='class="pict background_main_portfolio_items"';
+									}
+									else
+										{
+											$data_id='none';
+											$pict_razdel='class="padding_top_10"';
+											$change_back_img='class="pict background_main_portfolio_items_none"';
+										} 
+  	 								print '<li data-id="'.$data_id.'" class="portfolio_main_ul_li_last_in_line"><div '.$change_back_img.' ></div>
+  	 								<div '.$pict_razdel.'>Предметы и аксессуары</div>
+  	 								</li>
+  	 							</ul>
+  	 							</div>
+  	 						</div>
+  	 			</div>';
+			?>
+		<script type="text/javascript">
+		$('#portfolio_main li').bind('click',function() {
+			$(this).attr('data-id')!='none' ? location.href='portfolio/Razdel/!/'+$(this).attr('data-id') : console.log('none');
+			
+		})
+		/*$('#portfolio_main li').bind('mouseover',function() {
+			$('> .pict',this).css('border','1px solid #ebebeb');
+			$('>.pict_razdel',this).css('color','#9775b9');
+		})
+		$('#portfolio_main li').bind('mouseout',function() {
+			$('>.pict',this).css('border','1px solid transparent');
+			$('>.pict_razdel',this).css('color','black');
+		})*/
+		</script>

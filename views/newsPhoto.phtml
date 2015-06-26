@@ -1,0 +1,182 @@
+<?php
+	$page -> setTitle("Елена Широва - новости");
+	
+	
+	if ($controller -> hasParam('id')){
+		$id = $controller -> getParam('id');
+		$sql_parent='SELECT id_news FROM news_galery WHERE id='.$id;
+		$db->query($sql_parent);
+		if($db->getCount()>0)
+			{
+				$parent=$db->getValue();
+			}
+		} else {
+				$id=0;
+				$parent=0;
+			   }
+		
+		print '<div class="shadow"></div><div class="float_right_arrow">
+	  				<div class="arrows_right">
+	  				</div>
+	  </div>
+	  
+	   <div class="float_left_arrow">
+	   			<div class="arrows_left">
+	  			</div>
+		</div>';
+		print "<div class='title_0'>";
+		//get back link
+		if($id!=0)
+		{
+			$sql_back_link='SELECT id_news FROM news_galery WHERE id='.$id;
+			$db->query($sql_back_link);
+			if($db->getCount()>0)
+			{
+				print "<div class='back_news'><a href='/news/full/id/".$db->getValue()."' class='customer_font'>Вернуться&nbsp;назад</a></div>";
+			}
+			else
+			{
+				print "<div class='back_news'><a href='/news/full' class='customer_font'>Вернуться&nbsp;назад</a></div>";
+			}
+		}
+		else
+		{
+			print "<div class='back_news'><a href='/news/full' class='customer_font'>Вернуться&nbsp;назад</a></div>";
+		}
+		$sql='SELECT * FROM news_galery WHERE id_news='.$parent;
+			$db->query($sql);
+			if($db->getCount()>0)
+			{
+				$arr=$db->getArray();
+				foreach($arr as $index=>$val)
+				{
+					$mass[]=array('id' => $val['id'], 'photo' => $val['photo']);
+				}
+			}
+		print "<div class='count_page'></div>		
+			
+							<div class='preloader'></div>
+							<div id='main_portfolio'>";
+							$sql='SELECT photo FROM news_galery WHERE id='.$id;
+							$db->query($sql);
+							if($db->getCount()>0)
+							{
+								print "<div class='picture_hight_width' style='background:transparent url(img/news_gallery/".$db->getValue().") no-repeat;'>";
+							}				
+  	 						
+  	 		
+			
+			
+			
+print '</div></div></div>';
+?>
+<script type='text/javascript'>
+          var  obj=<?php echo json_encode($mass);?>;
+           var page=<?php echo $id;?>;
+           if(page!=0)
+           {
+           		//какая по счету новость
+           		for(i=0;i<obj.length;i++)
+           		{
+           			if(obj[i]['id']==page)
+           			{
+           				page=i+1;
+           			}
+           		}
+           }
+          $('.count_page').replaceWith('<div class="count_page">Фото '+ page+' / '+obj.length+'</div>');
+          if(obj.length==1)
+          {
+          	$('.float_left_arrow, .float_right_arrow').hide();
+          }
+          
+          if(page>1) {$('.float_left_arrow').show();}
+          if(page==obj.length) {$('.float_right_arrow').hide();}
+           $(document).bind('keyup',function(e){
+           	 if ($(':animated').length) { return false;}	
+           	 else
+           	 {
+           	 		switch (e.keyCode){
+						case 37:
+						$('.float_left_arrow').trigger('click');
+						break;
+						case 39: 
+						$('.float_right_arrow').trigger('click');
+						break;
+					}
+           	 }
+			})
+          $('.float_right_arrow').live('click touchend',function()
+          {
+          	 if ($(':animated').length) { return false;}	
+          	 else
+          	 {
+          					if(page!=obj.length)
+          					{
+						   				if(obj.length>0)
+						   				{
+						   					next='../img/news_gallery/'+obj[page]['photo'];
+						   				}
+							     page++;
+          					}
+          					else
+          					{
+          						return false;
+          					}
+          	        
+          			if(page==obj.length) { $(this).hide();}
+          			if(page>1)
+          			{
+          				$('.float_left_arrow').show();
+          			}
+      				
+					$('.count_page').replaceWith('<div class="count_page">Фото '+page+' / '+obj.length+'</div>');
+					$('.preloader').show();
+					var img=new Image();
+					img.src=next;
+  				   	$('.picture_hight_width').animate({marginLeft:'930px'}, 500, function() {
+  				   	$('.picture_hight_width').css('margin-left','-930px');
+					$('.picture_hight_width').animate({marginLeft:'20px'},500);
+					 $('.picture_hight_width').css('background','url('+next+')');
+					$('.preloader').hide();  
+					}) 
+          	 }
+          					     		
+          });
+          $('.float_left_arrow').live('click touchend',function()
+          {
+          	if ($(':animated').length) { return false;}	
+          	 else
+          	 {
+          	 	 if(page==1) return false;
+          			var next='';
+          			if(page!=1)
+      					{
+      						 page--;	
+          			if(page==1) { $(this).hide();}
+          			if(page<obj.length)
+          			{
+          				$('.float_right_arrow').show();
+          			}
+          			 
+					$('.count_page').replaceWith('<div class="count_page">Фото '+page+' / '+obj.length+'</div>');
+					$('.preloader').show();
+					next='../img/news_gallery/'+obj[page-1]['photo'];
+					var img=new Image();
+					img.src=next;
+  				   	$('.picture_hight_width').animate({marginLeft:'-930px'}, 500, function() {
+  				   	$('.picture_hight_width').css('margin-left','930px');
+					$('.picture_hight_width').animate({marginLeft:'20px'},500);
+				
+					$('.picture_hight_width').css('background','url('+next+')');
+					$('.preloader').hide();  
+					})   
+					   				 	
+						}			   	   
+      				
+					
+          	 }
+          	         		
+          });
+          
+   </script>		

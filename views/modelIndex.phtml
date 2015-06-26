@@ -1,0 +1,81 @@
+<?php
+  $page -> setTitle('Елена Широва - модели');
+    $page -> addScript('js/jquery-1.6.1.min.js','js/model.js');
+	
+?>
+<div class="shadow"></div>
+<?php
+					print ' <div class="float_right_arrow">
+	  				<div class="arrows_right">
+	  				</div>
+	  </div>
+	  
+	   <div class="float_left_arrow">
+	   			<div class="arrows_left">
+	  			</div>
+		</div>';
+				   		
+?>
+		  	 
+	
+<div class="title_0">
+		<ul id='menu_cont_comand'> 
+		<li >
+			<a href="/group" title="">Творческая группа</a><span style="margin:0 10px;">|</span>
+			</li>
+		<li >
+			<a href="/partner" title="">Партнеры</a><span style="margin:0 10px;">|</span>
+			</li>
+			<li class="current">
+			<a href="/model" title="">Модели</a>
+			</li>
+		</ul>
+				
+		
+		<?php
+				$sql_models="SELECT id,name, description,photo FROM team_model ORDER BY name ASC";
+				$db->query($sql_models);
+				
+					foreach ($db->getArray() as $value) {
+						
+						$sql_models_galery="SELECT id_team_model, photo, photo_small FROM  team_model_gallery WHERE id_team_model IN ( SELECT id  FROM  team_model WHERE id = ".$value['id'].") ORDER BY id_team_model ASC";
+						$db2->query($sql_models_galery);
+						if(	$db2->getCount()>0) {
+							foreach ($db2->getArray() as $value2) {
+								     if(file_exists('img/team_model/'.$value2['photo_small']))
+									{
+										$size2=getimagesize('img/team_model/'.$value2['photo_small']); 
+									}
+									else
+									{
+										$size2='';
+									}
+								$m[]=array('photo'=>$value2['photo'],'photo_small'=>$value2['photo_small'],'width_gal_small'=>$size2[0]);									
+								}
+						}else {$m=array();$size2=0;}
+							if(file_exists('img/team_model/'.$value['photo']))
+									{
+									   $size=getimagesize('img/team_model/'.$value['photo']);
+									}
+							else {
+								$size=0;
+							}
+							
+							$mass[]=array('name' => $value['name'], 'description' =>  $value['description'], 'photo' => $value['photo'],'width' => $size[0],'gal'=>$m);	
+							$m=array();
+							$size2=0;
+		         			
+					}	
+				print '<div class="clear"></div>
+				<div class="preloader"></div>
+							<div id="one">  </div>
+  	 			</div>';
+		?>							
+	<script type="text/javascript"> 
+	
+	$.config = {
+            obj:<?php echo json_encode($mass);?>
+        };
+   </script>		
+
+

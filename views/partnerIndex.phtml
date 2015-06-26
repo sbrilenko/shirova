@@ -1,0 +1,172 @@
+<?php
+  $page -> setTitle('Елена Широва - партнеры');
+    $page -> addScript('js/jquery-1.6.1.min.js','js/arrow.js');
+	
+?>
+<div class="shadow"></div>
+<?php
+	$current=$controller->getController();
+	print '<div class="float_right_arrow">
+	  				<div class="arrows_right">
+	  				</div>
+	  </div>
+	  
+	   <div class="float_left_arrow">
+	   			<div class="arrows_left">
+	  			</div>
+		</div>';
+				   		
+?>
+		  	 
+	
+<div class="title_0">
+		<ul id='menu_cont_comand'> 
+		<li >
+			<a href="/group" title="">Творческая группа</a><span style="margin:0 10px;">|</span>
+			</li>
+		<li class='current'>
+			<a href="/partner" title="">Партнеры</a><span style="margin:0 10px;">|</span>
+			</li>
+			<li >
+			<a href="/model" title="">Модели</a>
+			</li>
+		</ul>
+				
+			<div class="preloader"></div>
+							<div id="main_portfolio">
+								
+								
+	
+		<?php
+				 $content='';
+		$k=1;
+  	 	$sql="SELECT photo, url FROM  team_partner ORDER BY weight ASC"; 
+				$db->query($sql);
+				if($db->getCount()>0)
+				{
+				
+					print '<div class="picture_hight_width margin_55_35_0_35">
+  	 							<ul class="portfolio_main_ul" id="portfolio_main">';
+					
+					foreach ($db->getArray() as $index=>$value) {
+						
+								if($index-(8*$k)>-1)
+								{
+									$mass[]=array('id'=>$content,'index'=>$index,'percent'=>$index-(8*$k));
+									$content='';
+									$k=$k+1;
+								}
+								$content.='<li class="portfolio_partner_li">
+  <a href="http://'.$value['url'].'" target="_blank" title="">
+    <img src="img/team_partner/'.$value['photo'].'">
+  </a>
+</li>';	
+								
+
+						
+											          
+					}
+				if(!empty($content))
+								{
+									  $mass[]=array('id'=>$content,'index'=>$index,'percent'=>$index-(8*$k));
+								}
+						     
+									
+				  	 		    print '</ul></div>';		
+					}
+				/*$sql_models="SELECT photo, url FROM  team_partner ORDER BY weight ASC";
+				$db->query($sql_models);
+					foreach ($db->getArray() as $value) {
+						$size=getimagesize('img/team_partner/'.$value['photo']);
+						$mass[]=array('photo' => $value['photo'], 'url' => $value['url'],'width' => $size[0]);
+						
+								
+			}
+		print '<div class="clear"></div>
+				<div class="preloader"></div>
+							<div id="one">  </div>
+  	 			</div>';*/
+  	 			
+		?>	
+	</div></div>					
+<script type="text/javascript"> 
+$(document).ready(function() {
+  	 
+  	 
+  	var obj = <?php echo json_encode($mass);?> 
+  	var total=obj.length;
+  	var current=0;
+  	 var img= new Image();
+  	 var content='';
+  	 if(obj.length>1)
+  	 {
+  	 	 
+  	 }
+  	 else
+  	 {
+  	 	$('.float_right_arrow').hide();
+  	 	
+  	 }
+
+  	 $('#portfolio_main').replaceWith('<ul class="portfolio_main_ul" id="portfolio_main">'+obj[current]['id']+'</ul>');
+  	 // $('.picture_hight_width').css('background','url("img/partner_logo/'+obj[current]['photo']+'") no-repeat');
+
+       $(document).bind('keyup',function(e){
+					switch (e.keyCode){
+						case 39: 
+						 if ($(':animated').length) { return false;}	
+						 else $('.float_right_arrow').trigger('click')
+						//alert('37'); 	
+						break;
+						case 37:
+							 if ($(':animated').length) { return false;}	
+  	  						 else $('.float_left_arrow').trigger('click')
+						 break;						
+					}
+				});
+      
+  	 $('.float_right_arrow,.float_left_arrow').live('click touchend',function() {
+  	  if ($(':animated').length) { return false;}	
+  	  else {
+  	if($(this).attr('class')=="float_right_arrow")
+  			{ 
+                   
+                   
+  				   if(current<total-1) {
+  				   if(current==total-2) { $('.float_right_arrow').hide();}
+  				      
+  				    $('.preloader').show();
+  				   	$('.picture_hight_width').animate({marginLeft:'930px'}, 500, function() {
+  				   	$('.picture_hight_width').css('margin-left','-930px');
+					$('.picture_hight_width').animate({marginLeft:'35px'},500);
+					$('.float_left_arrow').show();
+					$('#portfolio_main').replaceWith('<ul class="portfolio_main_ul" id="portfolio_main">'+obj[current+1]['id']+'</ul>');
+					$('.preloader').hide();
+  					current=current+1;
+
+					});
+
+  		           }
+  			}
+  	if($(this).attr('class')=="float_left_arrow") 
+  			{ 
+  				    if(current>=1) {
+  				 	if(current==1) { $('.float_left_arrow').hide();}
+  					$('.preloader').show();
+  				 	$('.picture_hight_width').animate({marginLeft:'-930px'},500 , function() {
+  				 	$('.picture_hight_width').css('margin-left','930px');
+					$('.picture_hight_width').animate({marginLeft:'35px'},500);
+  				 	$('.float_right_arrow').show();
+  					current=current-1;
+  					$('#portfolio_main').replaceWith('<ul class="portfolio_main_ul" id="portfolio_main">'+obj[current]['id']+'</ul>');
+  					$('.preloader').hide();
+  		           });
+  		           }
+  			}
+  		}
+        	});
+  	
+  });
+
+</script>
+

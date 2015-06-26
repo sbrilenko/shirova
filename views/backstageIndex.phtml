@@ -1,0 +1,155 @@
+<?php
+  $page -> setTitle('Елена Широва - backstage');
+    $page -> addScript('js/jquery-1.7.js','js/arrow.js');
+
+?>
+
+<div class="shadow"></div>
+		  	   <div class="float_right_arrow">
+	  				<div class="arrows_right">
+	  				</div>
+	  </div>
+	  
+	   <div class="float_left_arrow">
+	   			<div class="arrows_left">
+	  			</div>
+		</div>
+	  
+	  
+		
+<div class="title_0">
+
+	
+				<?php 
+
+				$sql_img="SELECT * FROM backstage ORDER BY data_create DESC";
+				$db->query($sql_img);
+			    if($db->getCount()!=0)
+				{
+					foreach ($db->getArray() as $value) {
+						$mass[]=array('client' => $value['title'], 'description' => $value['description'], 'photo' => $value['flv']);
+							}
+
+	print '<div class="customer"><span class="customer_font">Заказчик</span><span class="replace">'.$mass[0]['client'].'</span> </div>
+	<div class="text_port_backstage">'.$mass[0]['description'].' </div>';				
+				print '<div class="clear"></div>
+				<div class="preloader"></div>
+							<div id="main_portfolio">
+								
+  	 							<div class="video_hight_width">
+  	 							    <div class="video">
+  	 							    </div>
+  	 							</div></div></div>';
+				}
+				else
+					{
+						   $mass[]=null;
+							print '<div class="customer"><span class="customer_font">Заказчик</span><span class="replace"></span> </div>
+	<div class="text_port"></div>';				
+				print '<div class="clear"></div>
+				<div class="preloader"></div>
+							<div id="main_portfolio">
+								
+  	 							<div class="video_hight_width">
+  	 								   <div class="video">
+  	 							    </div>
+								
+  	 							</div></div></div>';
+					}
+			?>
+		
+	<script type="text/javascript"> 
+  $(document).ready(function() {
+  	var obj = <?php echo json_encode($mass);?> 
+  	 console.log(obj);
+  	var total=obj.length;
+  	var current=0;
+    if(total<=1) {$('.float_right_arrow').hide(); $('.float_left_arrow').hide();}
+    // $('.picture_hight_width').css('background','url("img/back_yout.png")').css('width','640px').css('height','480px').css('margin-left','170px');
+   $('.video').replaceWith('<div class="video"><object style="margin-top:20px;height: 480px; width: 640px"><param name="movie" value="http://'+obj[current]['photo']+'?version_3&showinfo=0&theme=light&color=white'+'"><param name="allowFullScreen" value="true"><param name="allowScriptAccess" value="always"><embed src="http://'+obj[current]['photo']+'?version_3&showinfo=0&theme=light&color=white'+'" type="application/x-shockwave-flash" allowfullscreen="true" allowScriptAccess="always" width="640" height="480"></object></div>');
+
+       $(document).bind('keyup',function(e){
+					switch (e.keyCode){
+						case 39: 
+							 if ($(':animated').length) { return false;}	
+  	  						else $('.float_right_arrow').trigger('click')	
+						break;
+						case 37:
+						
+							 if ($(':animated').length) { return false;}	
+  	  						else $('.float_left_arrow').trigger('click')	
+						 break;						
+					}
+				});
+      
+  	 $('.float_right_arrow,.float_left_arrow').live('click touchend',function() {
+  	  if ($(':animated').length) { return false;}	
+  	  else {
+  	if($(this).attr('class')=="float_right_arrow")
+  			{ 
+                   
+                   if(total==1) { return false;}
+  				   if(current<total-1) {
+  				   if(current==total-2) { $('.float_right_arrow').hide();}
+  				      $('.video').replaceWith('<div class="video"></div>');
+  				      //$('.picture_hight_width').css('background','url("img/back_yout.png")').css('width','640px').css('height','480px').css('margin-left','170px');
+  				    $('.preloader').show();
+  				    
+  				 
+  				   	$('.video_hight_width').animate({marginLeft:'930px'}, 500, function() {
+  				   		
+  				   	$('.video_hight_width').css('margin-left','-930px');
+					$('.video_hight_width').animate({marginLeft:'20px'},500);
+					
+					current=current+1;
+											
+					$('.preloader').hide();
+					$('.float_left_arrow').show();
+						 $('span.replace').replaceWith('<span class="replace">'+obj[current]['client']+'</span>');
+  		            $('div.text_port_backstage').replaceWith('<div class="text_port_backstage">'+obj[current]['description']+'</div>');
+  		            console.log(obj[current]['description']);
+						$('.video').replaceWith('<div class="video"><object style="margin-top:20px;height: 48px; width: 640px"><param name="movie" value="http://'+obj[current]['photo']+'?version_3&showinfo=0&theme=light&color=white'+'"><param name="allowFullScreen" value="true"><param name="allowScriptAccess" value="always"><embed src="http://'+obj[current]['photo']+'?version_3&showinfo=0&theme=light&color=white'+'" type="application/x-shockwave-flash" allowfullscreen="true" allowScriptAccess="always" width="640" height="480"></object></div>').css('background','url("img/back_yout.png")').css('width','640px').css('height','480px').css('margin-left','170px');
+
+  				   	
+  				   //	
+  		            //$('.picture_hight_width').css('background','url("img/back_yout.png")').css('width','640px').css('height','480px').css('margin-left','170px');
+  		            //$('.picture_hight_width img').attr('src',cur.src);
+  		           
+					});
+                    
+  		           }
+  			}
+  	if($(this).attr('class')=="float_left_arrow") 
+  			{ 
+  				
+  				if(total==1) { return false;}
+  				 if(current>=1) {
+  				 	if(current==1) { $('.float_left_arrow').hide();}
+  					$('.preloader').show();
+  					  $('.video').replaceWith('<div class="video"></div>');
+
+  				 	$('.video_hight_width').animate({marginLeft:'-930px'},500 , function() {
+  				 $('.video_hight_width').css('margin-left','930px');
+  				 	
+					$('.video_hight_width').animate({marginLeft:'20px'},500);
+  				 current=current-1;
+						$('.float_right_arrow').show();
+  					$('.preloader').hide();
+  		             $('span.replace').replaceWith('<span class="replace">'+obj[current]['client']+'</span>');
+  		              $('div.text_port_backstage').replaceWith('<div class="text_port_backstage">'+obj[current]['description']+'</div>');
+  				 	$('.video').replaceWith('<div class="video"><object style="margin-top:20px;height: 480px; width: 640px"><param name="movie" value="http://'+obj[current]['photo']+'?version_3&showinfo=0&theme=light&color=white'+'"><param name="allowFullScreen" value="true"><param name="allowScriptAccess" value="always"><embed src="http://'+obj[current]['photo']+'?version_3&showinfo=0&theme=light&color=white'+'" type="application/x-shockwave-flash" allowfullscreen="true" allowScriptAccess="always" width="640" height="480"></object></div>');
+  				 	
+  		           });
+  		           }
+  			}
+  		}
+        	});
+        	
+       
+       
+  	
+  });
+
+</script>
+					
+	
